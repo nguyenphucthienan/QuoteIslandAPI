@@ -8,6 +8,7 @@ require('./models/Role');
 require('./models/User');
 require('./services/passportLocal');
 require('./services/passportJwt');
+require('./seeds/Seeds');
 
 const routes = require('./routes');
 const config = require('./config');

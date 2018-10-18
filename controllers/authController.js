@@ -46,7 +46,6 @@ exports.logIn = async (req, res) => {
 };
 
 exports.currentUser = async (req, res) => {
-  const user = await userService.getUserById(req.user.id);
-  const returnUser = _.omit(user.toObject(), ['password']);
+  const returnUser = _.omit(req.user.toObject(), ['password']);
   return res.json(returnUser);
 };

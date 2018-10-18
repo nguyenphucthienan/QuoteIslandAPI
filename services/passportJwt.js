@@ -12,7 +12,9 @@ const jwtOptions = {
 
 const jwtLogin = new JwtStrategy(jwtOptions, async (payload, done) => {
   try {
-    const user = await User.findById(payload.id);
+    const user = await User
+      .findById(payload.id)
+      .populate('roles');
 
     if (!user) {
       return done(null, false);
