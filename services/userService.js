@@ -30,7 +30,12 @@ exports.createUser = (username, password, firstName, lastName) => {
 exports.generateTokenForUser = (user) => {
   const roles = user.roles.map(role => role.name);
   return jwt.sign(
-    { id: user.id, role: roles },
+    {
+      id: user.id,
+      nameid: user.username,
+      name: `${user.firstName} ${user.lastName}`,
+      role: roles
+    },
     config.secretKey,
     { expiresIn: config.token.expirationTime }
   );
