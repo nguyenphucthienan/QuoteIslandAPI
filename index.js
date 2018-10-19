@@ -9,6 +9,7 @@ require('./models/Role');
 require('./models/User');
 require('./models/Author');
 require('./models/Category');
+require('./models/Quote');
 require('./services/passportLocal');
 require('./services/passportJwt');
 require('./seeds/Seeds');
