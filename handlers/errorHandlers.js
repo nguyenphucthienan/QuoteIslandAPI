@@ -1,6 +1,6 @@
 exports.developmentErrorHandler = (err, req, res, next) => {
   console.log('ERROR: ', err);
-  return res.status(err.status || 500).json(err.message);
+  return res.status(err.status || 500).send(err.message);
 };
 
 exports.productionErrorHandler = (err, req, res, next) => (

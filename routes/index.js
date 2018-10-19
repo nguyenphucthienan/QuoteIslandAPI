@@ -3,6 +3,7 @@ const router = express.Router();
 const authController = require('../controllers/authController');
 const roleController = require('../controllers/roleController');
 const authorController = require('../controllers/authorController');
+const categoryController = require('../controllers/categoryController');
 
 const {
   requireLocalAuth,
@@ -41,5 +42,14 @@ router.post('/authors',
   requireJwtAuth,
   requireRoles([RoleNames.ADMIN, RoleNames.MODERATOR]),
   authorController.createAuthor);
+
+router.get('/categories', categoryController.getCategories);
+
+router.get('/categories/:id', categoryController.getCategory);
+
+router.post('/categories',
+  requireJwtAuth,
+  requireRoles([RoleNames.ADMIN, RoleNames.MODERATOR]),
+  categoryController.createCategory);
 
 module.exports = router;
