@@ -20,3 +20,7 @@ exports.createCategory = (category) => {
   const newCategory = new Category({ ...category });
   return newCategory.save();
 };
+
+exports.deleteCetagoryById = id => (
+  Category.findByIdAndDelete(id).exec()
+);

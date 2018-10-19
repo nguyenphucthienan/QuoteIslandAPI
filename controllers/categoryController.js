@@ -12,10 +12,27 @@ exports.getCategory = async (req, res) => {
   const { id } = req.params;
 
   const category = await categoryService.getCategoryById(id);
+
+  if (!category) {
+    return res.status(404).send();
+  }
+
   return res.send(category);
 };
 
 exports.createCategory = async (req, res) => {
   const category = await categoryService.createCategory(req.body);
+  return res.send(category);
+};
+
+exports.deleteCategory = async (req, res) => {
+  const { id } = req.params;
+
+  const category = await categoryService.deleteCetagoryById(id);
+
+  if (!category) {
+    return res.status(404).send();
+  }
+
   return res.send(category);
 };

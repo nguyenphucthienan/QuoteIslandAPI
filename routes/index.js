@@ -79,4 +79,9 @@ router.post('/categories',
   requireRoles([RoleNames.ADMIN, RoleNames.MODERATOR]),
   catchErrors(categoryController.createCategory));
 
+router.delete('/categories/:id',
+  requireJwtAuth,
+  requireRoles([RoleNames.ADMIN, RoleNames.MODERATOR]),
+  catchErrors(categoryController.deleteCategory));
+
 module.exports = router;
