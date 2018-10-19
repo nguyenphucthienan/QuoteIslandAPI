@@ -9,6 +9,11 @@ exports.getRole = async (req, res) => {
   const { id } = req.params;
 
   const role = await roleService.getRoleById(id);
+
+  if (!role) {
+    return res.status(404).send();
+  }
+
   return res.send(role);
 };
 
@@ -21,5 +26,10 @@ exports.deleteRole = async (req, res) => {
   const { id } = req.params;
 
   const role = await roleService.deleteRoleById(id);
+
+  if (!role) {
+    return res.status(404).send();
+  }
+
   return res.send(role);
 };

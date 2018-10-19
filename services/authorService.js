@@ -20,3 +20,7 @@ exports.createAuthor = (author) => {
   const newAuthor = new Author({ ...author });
   return newAuthor.save();
 };
+
+exports.deleteAuthorById = id => (
+  Author.findByIdAndDelete(id).exec()
+);
