@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const authController = require('../controllers/authController');
 const roleController = require('../controllers/roleController');
+const authorController = require('../controllers/authorController');
 
 const {
   requireLocalAuth,
@@ -31,5 +32,14 @@ router.get('/roles',
   requireJwtAuth,
   requireRoles([RoleNames.ADMIN]),
   roleController.getRoles);
+
+router.get('/authors', authorController.getAuthors);
+
+router.get('/authors/:id', authorController.getAuthor);
+
+router.post('/authors',
+  requireJwtAuth,
+  requireRoles([RoleNames.ADMIN, RoleNames.MODERATOR]),
+  authorController.createAuthor);
 
 module.exports = router;

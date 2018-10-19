@@ -22,7 +22,7 @@ exports.register = async (req, res) => {
 
     const newUser = await userService.createUser(username, password, firstName, lastName);
     const token = userService.generateTokenForUser(newUser);
-    return res.json({ token });
+    return res.send({ token });
   } catch (err) {
     return res.status(500).send(err);
   }
@@ -33,19 +33,19 @@ exports.checkUsername = async (req, res) => {
   const user = await userService.getUserByUsername(username);
 
   if (!user) {
-    return res.json({ result: true });
+    return res.send({ result: true });
   }
 
-  return res.json({ result: false });
+  return res.send({ result: false });
 };
 
 exports.logIn = async (req, res) => {
   const user = await userService.getUserById(req.user.id);
   const token = userService.generateTokenForUser(user);
-  return res.json({ token });
+  return res.send({ token });
 };
 
 exports.currentUser = async (req, res) => {
   const returnUser = _.omit(req.user.toObject(), ['password']);
-  return res.json(returnUser);
+  return res.send(returnUser);
 };
