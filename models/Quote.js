@@ -11,9 +11,13 @@ const quoteSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'Category'
   }],
-  quoteText: {
+  text: {
     type: String,
-    require: 'Quote is required',
+    require: 'Text is required',
+    trim: true
+  },
+  photoUrl: {
+    type: String,
     trim: true
   },
   loves: [{

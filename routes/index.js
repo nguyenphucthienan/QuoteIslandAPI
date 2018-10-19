@@ -4,6 +4,7 @@ const authController = require('../controllers/authController');
 const roleController = require('../controllers/roleController');
 const authorController = require('../controllers/authorController');
 const categoryController = require('../controllers/categoryController');
+const quoteController = require('../controllers/quoteController');
 const { catchErrors } = require('../handlers/errorHandlers');
 
 const {
@@ -83,5 +84,21 @@ router.delete('/categories/:id',
   requireJwtAuth,
   requireRoles([RoleNames.ADMIN, RoleNames.MODERATOR]),
   catchErrors(categoryController.deleteCategory));
+
+router.get('/quotes',
+  catchErrors(quoteController.getQuotes));
+
+router.get('/quotes/:id',
+  catchErrors(quoteController.getQuote));
+
+router.post('/quotes',
+  requireJwtAuth,
+  requireRoles([RoleNames.ADMIN, RoleNames.MODERATOR]),
+  catchErrors(quoteController.createQuote));
+
+router.delete('/quotes/:id',
+  requireJwtAuth,
+  requireRoles([RoleNames.ADMIN, RoleNames.MODERATOR]),
+  catchErrors(quoteController.deleteQuote));
 
 module.exports = router;
