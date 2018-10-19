@@ -8,7 +8,7 @@ const {
   requireJwtAuth
 } = require('../middlewares/passportAuth');
 
-const requireRole = require('../middlewares/requireRole');
+const requireRoles = require('../middlewares/requireRoles');
 const RoleNames = require('../constants/RoleNames');
 
 router.get('/', (req, res) => {
@@ -29,7 +29,7 @@ router.get('/auth/me',
 
 router.get('/roles',
   requireJwtAuth,
-  requireRole(RoleNames.ADMIN),
+  requireRoles([RoleNames.ADMIN]),
   roleController.getRoles);
 
 module.exports = router;
