@@ -37,6 +37,21 @@ router.get('/roles',
   requireRoles([RoleNames.ADMIN]),
   catchErrors(roleController.getRoles));
 
+router.get('/roles/:id',
+  requireJwtAuth,
+  requireRoles([RoleNames.ADMIN]),
+  catchErrors(roleController.getRole));
+
+router.post('/roles',
+  requireJwtAuth,
+  requireRoles([RoleNames.ADMIN]),
+  catchErrors(roleController.createRole));
+
+router.delete('/roles/:id',
+  requireJwtAuth,
+  requireRoles([RoleNames.ADMIN]),
+  catchErrors(roleController.deleteRole));
+
 router.get('/authors',
   catchErrors(authorController.getAuthors));
 
