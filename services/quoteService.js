@@ -1,12 +1,9 @@
 const mongoose = require('mongoose');
 const Quote = mongoose.model('Quote');
 
-exports.getQuotes = (pageNumber, pageSize) => (
+exports.getQuotes = (pageNumber, pageSize, sortObj) => (
   Quote.find()
-    .sort({
-      fullName: 1,
-      updatedAt: -1
-    })
+    .sort(sortObj)
     .populate('author', '_id fullName')
     .populate('categories', '_id name')
     .skip((pageNumber - 1) * pageSize)
@@ -30,4 +27,4 @@ exports.deleteQuoteById = id => (
   Quote.findByIdAndDelete(id).exec()
 );
 
-exports.countQuotes = () => Quote.count().exec();
+exports.countQuotes = () => Quote.countDocuments().exec();

@@ -1,11 +1,15 @@
 const quoteService = require('../services/quoteService');
 const Pagination = require('../helpers/Pagination');
+const ServiceHelpers = require('../helpers/ServiceHelpers');
 
 exports.getQuotes = async (req, res) => {
   const pageNumber = Math.max(0, parseInt(req.query.pageNumber, 10)) || 1;
   const pageSize = parseInt(req.query.pageSize, 10) || 5;
 
-  const quotes = await quoteService.getQuotes(pageNumber, pageSize);
+  const { sort } = req.query;
+  const sortObj = ServiceHelpers.createSortObject(sort);
+
+  const quotes = await quoteService.getQuotes(pageNumber, pageSize, sortObj);
   const totalItems = await quoteService.countQuotes();
 
   const data = {
