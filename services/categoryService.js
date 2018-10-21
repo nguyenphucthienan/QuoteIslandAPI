@@ -1,14 +1,14 @@
 const mongoose = require('mongoose');
 const Category = mongoose.model('Category');
 
-exports.getCategories = (page, offset) => (
+exports.getCategories = (pageNumber, pageSize) => (
   Category.find()
     .sort({
       name: 1,
       updatedAt: -1
     })
-    .skip(page * offset)
-    .limit(offset)
+    .skip((pageNumber - 1) * pageSize)
+    .limit(pageSize)
     .exec()
 );
 
@@ -24,3 +24,5 @@ exports.createCategory = (category) => {
 exports.deleteCetagoryById = id => (
   Category.findByIdAndDelete(id).exec()
 );
+
+exports.countCategories = () => Category.count().exec();

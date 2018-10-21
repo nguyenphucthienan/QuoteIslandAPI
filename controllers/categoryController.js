@@ -1,11 +1,19 @@
 const categoryService = require('../services/categoryService');
+const Pagination = require('../helpers/Pagination');
 
 exports.getCategories = async (req, res) => {
-  const page = Math.max(0, parseInt(req.query.page - 1, 10));
-  const offset = parseInt(req.query.offset, 10) || 5;
+  const pageNumber = Math.max(0, parseInt(req.query.pageNumber, 10)) || 1;
+  const pageSize = parseInt(req.query.pageSize, 10) || 5;
 
-  const categories = await categoryService.getCategories(page, offset);
-  return res.send(categories);
+  const categories = await categoryService.getCategories(pageNumber, pageSize);
+  const totalCount = await categoryService.countCategories();
+
+  const data = {
+    items: categories,
+    pagination: new Pagination(totalCount, pageNumber, pageSize)
+  };
+
+  return res.send(data);
 };
 
 exports.getCategory = async (req, res) => {
