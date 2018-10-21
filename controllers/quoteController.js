@@ -1,11 +1,19 @@
 const quoteService = require('../services/quoteService');
+const Pagination = require('../helpers/Pagination');
 
 exports.getQuotes = async (req, res) => {
-  const page = Math.max(0, parseInt(req.query.page - 1, 10));
-  const offset = parseInt(req.query.offset, 10) || 5;
+  const pageNumber = Math.max(0, parseInt(req.query.pageNumber, 10)) || 1;
+  const pageSize = parseInt(req.query.pageSize, 10) || 5;
 
-  const quotes = await quoteService.getQuotes(page, offset);
-  return res.send(quotes);
+  const quotes = await quoteService.getQuotes(pageNumber, pageSize);
+  const totalCount = await quoteService.countQuotes();
+
+  const data = {
+    items: quotes,
+    pagination: new Pagination(totalCount, pageNumber, pageSize)
+  };
+
+  return res.send(data);
 };
 
 exports.getQuote = async (req, res) => {

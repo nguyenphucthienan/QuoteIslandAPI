@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Quote = mongoose.model('Quote');
 
-exports.getQuotes = (page, offset) => (
+exports.getQuotes = (pageNumber, pageSize) => (
   Quote.find()
     .sort({
       fullName: 1,
@@ -9,8 +9,8 @@ exports.getQuotes = (page, offset) => (
     })
     .populate('author', '_id fullName')
     .populate('categories', '_id name')
-    .skip(page * offset)
-    .limit(offset)
+    .skip((pageNumber - 1) * pageSize)
+    .limit(pageSize)
     .exec()
 );
 
@@ -29,3 +29,5 @@ exports.createQuote = (quote) => {
 exports.deleteQuoteById = id => (
   Quote.findByIdAndDelete(id).exec()
 );
+
+exports.countQuotes = () => Quote.count().exec();
