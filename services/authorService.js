@@ -1,14 +1,14 @@
 const mongoose = require('mongoose');
 const Author = mongoose.model('Author');
 
-exports.getAuthors = (page, offset) => (
+exports.getAuthors = (pageNumber, pageSize) => (
   Author.find()
     .sort({
       fullName: 1,
       updatedAt: -1
     })
-    .skip(page * offset)
-    .limit(offset)
+    .skip((pageNumber - 1) * pageSize)
+    .limit(pageSize)
     .exec()
 );
 
@@ -24,3 +24,5 @@ exports.createAuthor = (author) => {
 exports.deleteAuthorById = id => (
   Author.findByIdAndDelete(id).exec()
 );
+
+exports.countAuthors = () => Author.count().exec();

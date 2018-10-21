@@ -1,11 +1,19 @@
 const authorService = require('../services/authorService');
+const Pagination = require('../helpers/Pagination');
 
 exports.getAuthors = async (req, res) => {
-  const page = Math.max(0, parseInt(req.query.page - 1, 10));
-  const offset = parseInt(req.query.offset, 10) || 5;
+  const pageNumber = Math.max(0, parseInt(req.query.pageNumber, 10)) || 1;
+  const pageSize = parseInt(req.query.pageSize, 10) || 5;
 
-  const authors = await authorService.getAuthors(page, offset);
-  return res.send(authors);
+  const authors = await authorService.getAuthors(pageNumber, pageSize);
+  const totalCount = await authorService.countAuthors();
+
+  const data = {
+    items: authors,
+    pagination: new Pagination(totalCount, pageNumber, pageSize)
+  };
+
+  return res.send(data);
 };
 
 exports.getAuthor = async (req, res) => {
