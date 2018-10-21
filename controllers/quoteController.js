@@ -6,11 +6,11 @@ exports.getQuotes = async (req, res) => {
   const pageSize = parseInt(req.query.pageSize, 10) || 5;
 
   const quotes = await quoteService.getQuotes(pageNumber, pageSize);
-  const totalCount = await quoteService.countQuotes();
+  const totalItems = await quoteService.countQuotes();
 
   const data = {
     items: quotes,
-    pagination: new Pagination(totalCount, pageNumber, pageSize)
+    pagination: new Pagination(pageNumber, pageSize, totalItems)
   };
 
   return res.send(data);

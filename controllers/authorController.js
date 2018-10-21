@@ -6,11 +6,11 @@ exports.getAuthors = async (req, res) => {
   const pageSize = parseInt(req.query.pageSize, 10) || 5;
 
   const authors = await authorService.getAuthors(pageNumber, pageSize);
-  const totalCount = await authorService.countAuthors();
+  const totalItems = await authorService.countAuthors();
 
   const data = {
     items: authors,
-    pagination: new Pagination(totalCount, pageNumber, pageSize)
+    pagination: new Pagination(pageNumber, pageSize, totalItems)
   };
 
   return res.send(data);
