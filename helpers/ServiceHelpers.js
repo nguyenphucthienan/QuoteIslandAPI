@@ -1,5 +1,9 @@
 class ServiceHelpers {
   static createSortObject(sortString) {
+    if (!sortString) {
+      return { createdAt: -1 };
+    }
+
     return sortString.split('|')
       .reduce((order, item) => {
         const direction = item.charAt(0) === '-' ? -1 : 1;
