@@ -45,6 +45,29 @@ class ServiceHelpers {
       }, {});
   }
 
+  static createCategoryFilterObject(filterString) {
+    if (!filterString) {
+      return {};
+    }
+
+    return filterString.split('|')
+      .reduce((filterObj, item) => {
+        const splitedItem = item.split(':');
+        const key = splitedItem[0];
+        const value = splitedItem[1];
+
+        const newFilterObject = { ...filterObj };
+
+        if (key === 'name') {
+          newFilterObject[key] = new RegExp(value, 'i');
+        } else {
+          newFilterObject[key] = value;
+        }
+
+        return newFilterObject;
+      }, {});
+  }
+
   static createSortObject(sortString) {
     if (!sortString) {
       return { createdAt: -1 };

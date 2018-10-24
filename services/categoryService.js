@@ -1,12 +1,26 @@
 const mongoose = require('mongoose');
 const Category = mongoose.model('Category');
 
-exports.getCategories = (pageNumber, pageSize, sortObj) => (
-  Category.find()
-    .sort(sortObj)
-    .skip((pageNumber - 1) * pageSize)
-    .limit(pageSize)
-    .exec()
+exports.getCategories = (pageNumber, pageSize, filterObj, sortObj) => (
+  Category.aggregate([
+    { $match: filterObj },
+    {
+      $lookup: {
+        from: 'quotes',
+        localField: '_id',
+        foreignField: 'categories',
+        as: 'quoteCount' // name for overwriting
+      },
+    },
+    {
+      $addFields: {
+        quoteCount: { $size: '$quoteCount' } // overwrite quoteCount field
+      }
+    },
+    { $sort: sortObj },
+    { $skip: (pageNumber - 1) * pageSize },
+    { $limit: pageSize }
+  ])
 );
 
 exports.getCategoryById = id => (
@@ -22,4 +36,7 @@ exports.deleteCetagoryById = id => (
   Category.findByIdAndDelete(id).exec()
 );
 
-exports.countCategories = () => Category.countDocuments().exec();
+exports.countCategories = filterObj => (
+  Category.find(filterObj)
+    .then(categories => categories.length)
+);

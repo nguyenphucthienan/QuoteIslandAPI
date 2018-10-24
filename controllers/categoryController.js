@@ -6,11 +6,12 @@ exports.getCategories = async (req, res) => {
   const pageNumber = Math.max(0, parseInt(req.query.pageNumber, 10)) || 1;
   const pageSize = parseInt(req.query.pageSize, 10) || 5;
 
-  const { sort } = req.query;
+  const { filter, sort } = req.query;
+  const filterObj = ServiceHelpers.createCategoryFilterObject(filter);
   const sortObj = ServiceHelpers.createSortObject(sort);
 
-  const categories = await categoryService.getCategories(pageNumber, pageSize, sortObj);
-  const totalItems = await categoryService.countCategories();
+  const categories = await categoryService.getCategories(pageNumber, pageSize, filterObj, sortObj);
+  const totalItems = await categoryService.countCategories(filterObj);
 
   const data = {
     items: categories,
