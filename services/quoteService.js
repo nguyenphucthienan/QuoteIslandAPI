@@ -31,3 +31,9 @@ exports.countQuotes = filterObj => (
   Quote.find(filterObj)
     .then(quotes => quotes.length)
 );
+
+exports.loveQuote = (id, currentUserId, operator) => (
+  Quote.findByIdAndUpdate(id,
+    { [operator]: { loves: currentUserId } },
+    { new: true })
+);

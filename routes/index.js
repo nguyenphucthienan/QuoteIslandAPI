@@ -101,4 +101,8 @@ router.delete('/quotes/:id',
   requireRoles([RoleNames.ADMIN, RoleNames.MODERATOR]),
   catchErrors(quoteController.deleteQuote));
 
+router.post('/quotes/:id/love',
+  requireJwtAuth,
+  catchErrors(quoteController.loveQuote));
+
 module.exports = router;

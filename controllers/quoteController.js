@@ -51,3 +51,22 @@ exports.deleteQuote = async (req, res) => {
 
   return res.send(quote);
 };
+
+exports.loveQuote = async (req, res) => {
+  const { id } = req.params;
+  const { id: currentUserId } = req.user;
+
+  const quote = await quoteService.getQuoteById(id);
+
+  if (!quote) {
+    return res.status(404).send();
+  }
+
+  const loves = quote.loves.map(obj => obj.toString());
+  const operator = loves.includes(currentUserId) ? '$pull' : '$addToSet';
+
+  await quoteService.loveQuote(id, currentUserId, operator);
+  const returnQuote = await quoteService.getQuoteById(id);
+
+  return res.send(returnQuote);
+};
