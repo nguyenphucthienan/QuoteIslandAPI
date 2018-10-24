@@ -7,7 +7,7 @@ exports.getQuotes = async (req, res) => {
   const pageSize = parseInt(req.query.pageSize, 10) || 5;
 
   const { filter, sort } = req.query;
-  const filterObj = ServiceHelpers.createFilterObject(filter);
+  const filterObj = ServiceHelpers.createQuoteFilterObject(filter);
   const sortObj = ServiceHelpers.createSortObject(sort);
 
   const quotes = await quoteService.getQuotes(pageNumber, pageSize, filterObj, sortObj);

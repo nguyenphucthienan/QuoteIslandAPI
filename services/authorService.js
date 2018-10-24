@@ -1,8 +1,9 @@
 const mongoose = require('mongoose');
 const Author = mongoose.model('Author');
 
-exports.getAuthors = (pageNumber, pageSize, sortObj) => (
+exports.getAuthors = (pageNumber, pageSize, filterObj, sortObj) => (
   Author.aggregate([
+    { $match: filterObj },
     {
       $lookup: {
         from: 'quotes',
@@ -35,4 +36,7 @@ exports.deleteAuthorById = id => (
   Author.findByIdAndDelete(id).exec()
 );
 
-exports.countAuthors = () => Author.countDocuments().exec();
+exports.countAuthors = filterObj => (
+  Author.find(filterObj)
+    .then(authors => authors.length)
+);

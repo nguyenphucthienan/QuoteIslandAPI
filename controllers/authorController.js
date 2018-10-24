@@ -6,11 +6,12 @@ exports.getAuthors = async (req, res) => {
   const pageNumber = Math.max(0, parseInt(req.query.pageNumber, 10)) || 1;
   const pageSize = parseInt(req.query.pageSize, 10) || 5;
 
-  const { sort } = req.query;
+  const { filter, sort } = req.query;
+  const filterObj = ServiceHelpers.createAuthorFilterObject(filter);
   const sortObj = ServiceHelpers.createSortObject(sort);
 
-  const authors = await authorService.getAuthors(pageNumber, pageSize, sortObj);
-  const totalItems = await authorService.countAuthors();
+  const authors = await authorService.getAuthors(pageNumber, pageSize, filterObj, sortObj);
+  const totalItems = await authorService.countAuthors(filterObj);
 
   const data = {
     items: authors,
