@@ -6,11 +6,12 @@ exports.getQuotes = async (req, res) => {
   const pageNumber = Math.max(0, parseInt(req.query.pageNumber, 10)) || 1;
   const pageSize = parseInt(req.query.pageSize, 10) || 5;
 
-  const { sort } = req.query;
+  const { filter, sort } = req.query;
+  const filterObj = ServiceHelpers.createFilterObject(filter);
   const sortObj = ServiceHelpers.createSortObject(sort);
 
-  const quotes = await quoteService.getQuotes(pageNumber, pageSize, sortObj);
-  const totalItems = await quoteService.countQuotes();
+  const quotes = await quoteService.getQuotes(pageNumber, pageSize, filterObj, sortObj);
+  const totalItems = await quoteService.countQuotes(filterObj);
 
   const data = {
     items: quotes,
