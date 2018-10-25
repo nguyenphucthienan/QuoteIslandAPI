@@ -72,6 +72,29 @@ class ServiceHelpers {
       }, {});
   }
 
+  static createCommentFilterObject(quoteId, filterString) {
+    if (!filterString) {
+      return {
+        quote: mongoose.Types.ObjectId(quoteId)
+      };
+    }
+
+    const returnFilterObj = filterString.split('|')
+      .reduce((filterObj, item) => {
+        const splitedItem = item.split(':');
+        const key = splitedItem[0];
+        const value = splitedItem[1];
+
+        const newFilterObject = { ...filterObj };
+        newFilterObject[key] = value;
+
+        return newFilterObject;
+      }, {});
+
+    returnFilterObj.quote = mongoose.Types.ObjectId(quoteId);
+    return returnFilterObj;
+  }
+
   static createSortObject(sortString) {
     if (!sortString) {
       return { createdAt: -1 };
