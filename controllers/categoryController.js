@@ -49,3 +49,22 @@ exports.deleteCategory = async (req, res) => {
 
   return res.send(category);
 };
+
+exports.loveCategory = async (req, res) => {
+  const { id } = req.params;
+  const { id: currentUserId } = req.user;
+
+  const category = await categoryService.getCategoryById(id);
+
+  if (!category) {
+    return res.status(404).send();
+  }
+
+  const loves = category.loves.map(obj => obj.toString());
+  const operator = loves.includes(currentUserId) ? '$pull' : '$addToSet';
+
+  await categoryService.loveCategory(id, currentUserId, operator);
+  const returnCategory = await categoryService.getCategoryById(id);
+
+  return res.send(returnCategory);
+};

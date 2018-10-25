@@ -13,7 +13,11 @@ const categorySchema = new Schema({
   photoUrl: {
     type: String,
     trim: true
-  }
+  },
+  loves: [{
+    type: Schema.Types.ObjectId,
+    ref: 'User'
+  }]
 }, { timestamps: true });
 
 mongoose.model('Category', categorySchema);

@@ -9,12 +9,13 @@ exports.getCategories = (pageNumber, pageSize, filterObj, sortObj) => (
         from: 'quotes',
         localField: '_id',
         foreignField: 'categories',
-        as: 'quoteCount' // name for overwriting
+        as: 'quoteCount'
       },
     },
     {
       $addFields: {
-        quoteCount: { $size: '$quoteCount' } // overwrite quoteCount field
+        quoteCount: { $size: '$quoteCount' }, // overwrite quoteCount field
+        loveCount: { $size: '$loves' }
       }
     },
     { $sort: sortObj },
@@ -23,9 +24,28 @@ exports.getCategories = (pageNumber, pageSize, filterObj, sortObj) => (
   ])
 );
 
-exports.getCategoryById = id => (
-  Category.findById(id).exec()
-);
+exports.getCategoryById = (id) => {
+  const _id = mongoose.Types.ObjectId(id);
+
+  return Category.aggregate([
+    { $match: { _id } },
+    {
+      $lookup: {
+        from: 'quotes',
+        localField: '_id',
+        foreignField: 'categories',
+        as: 'quoteCount'
+      },
+    },
+    {
+      $addFields: {
+        quoteCount: { $size: '$quoteCount' },
+        loveCount: { $size: '$loves' }
+      }
+    }
+  ])
+    .then(result => result[0]);
+};
 
 exports.createCategory = (category) => {
   const newCategory = new Category({ ...category });
@@ -39,4 +59,10 @@ exports.deleteCetagoryById = id => (
 exports.countCategories = filterObj => (
   Category.find(filterObj)
     .then(categories => categories.length)
+);
+
+exports.loveCategory = (id, currentUserId, operator) => (
+  Category.findByIdAndUpdate(id,
+    { [operator]: { loves: currentUserId } },
+    { new: true })
 );
