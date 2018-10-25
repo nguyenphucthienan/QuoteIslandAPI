@@ -49,3 +49,22 @@ exports.deleteAuthor = async (req, res) => {
 
   return res.send(author);
 };
+
+exports.loveAuthor = async (req, res) => {
+  const { id } = req.params;
+  const { id: currentUserId } = req.user;
+
+  const author = await authorService.getAuthorById(id);
+
+  if (!author) {
+    return res.status(404).send();
+  }
+
+  const loves = author.loves.map(obj => obj.toString());
+  const operator = loves.includes(currentUserId) ? '$pull' : '$addToSet';
+
+  await authorService.loveAuthor(id, currentUserId, operator);
+  const returnAuthor = await authorService.getAuthorById(id);
+
+  return res.send(returnAuthor);
+};

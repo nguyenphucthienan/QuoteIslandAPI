@@ -69,6 +69,10 @@ router.delete('/authors/:id',
   requireRoles([RoleNames.ADMIN, RoleNames.MODERATOR]),
   catchErrors(authorController.deleteAuthor));
 
+router.post('/authors/:id/love',
+  requireJwtAuth,
+  catchErrors(authorController.loveAuthor));
+
 router.get('/categories',
   catchErrors(categoryController.getCategories));
 
