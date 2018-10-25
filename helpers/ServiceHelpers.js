@@ -1,3 +1,5 @@
+const mongoose = require('mongoose');
+
 class ServiceHelpers {
   static createQuoteFilterObject(filterString) {
     if (!filterString) {
@@ -14,6 +16,8 @@ class ServiceHelpers {
 
         if (key === 'text') {
           newFilterObject[key] = new RegExp(value, 'i');
+        } else if (key === 'author' || key === 'categories') {
+          newFilterObject[key] = mongoose.Types.ObjectId(value);
         } else {
           newFilterObject[key] = value;
         }
