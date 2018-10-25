@@ -2,13 +2,45 @@ const mongoose = require('mongoose');
 const Quote = mongoose.model('Quote');
 
 exports.getQuotes = (pageNumber, pageSize, filterObj, sortObj) => (
-  Quote.find(filterObj)
-    .sort(sortObj)
-    .populate('author', '_id fullName')
-    .populate('categories', '_id name')
-    .skip((pageNumber - 1) * pageSize)
-    .limit(pageSize)
-    .exec()
+  Quote.aggregate([
+    { $match: filterObj },
+    {
+      $lookup: {
+        from: 'authors',
+        localField: 'author',
+        foreignField: '_id',
+        as: 'author'
+      },
+    },
+    {
+      $unwind: '$author'
+    },
+    {
+      $lookup: {
+        from: 'categories',
+        localField: 'categories',
+        foreignField: '_id',
+        as: 'categories'
+      },
+    },
+    {
+      $project: {
+        _id: 1,
+        createdAt: 1,
+        updatedAt: 1,
+        text: 1,
+        loves: 1,
+        loveCount: { $size: '$loves' },
+        'author._id': 1,
+        'author.fullName': 1,
+        'categories._id': 1,
+        'categories.name': 1
+      }
+    },
+    { $sort: sortObj },
+    { $skip: (pageNumber - 1) * pageSize },
+    { $limit: pageSize }
+  ])
 );
 
 exports.getQuoteById = id => (
