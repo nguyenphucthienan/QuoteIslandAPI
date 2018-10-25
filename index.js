@@ -10,6 +10,7 @@ require('./models/User');
 require('./models/Author');
 require('./models/Category');
 require('./models/Quote');
+require('./models/Comment');
 require('./services/passportLocal');
 require('./services/passportJwt');
 require('./seeds/Seeds');
