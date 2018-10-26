@@ -126,7 +126,6 @@ router.post('/quotes/:quoteId/comments',
 
 router.delete('/quotes/:quoteId/comments/:commentId',
   requireJwtAuth,
-  requireRoles([RoleNames.ADMIN, RoleNames.MODERATOR]),
   catchErrors(commentController.deleteComment));
 
 module.exports = router;

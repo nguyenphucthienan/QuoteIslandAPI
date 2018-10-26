@@ -23,7 +23,8 @@ exports.getComments = (pageNumber, pageSize, filterObj, sortObj) => (
         'user._id': 1,
         'user.username': 1,
         'user.firstName': 1,
-        'user.lastName': 1
+        'user.lastName': 1,
+        'user.photoUrl': 1
       }
     },
     { $sort: sortObj },

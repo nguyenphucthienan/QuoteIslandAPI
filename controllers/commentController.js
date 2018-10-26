@@ -53,13 +53,26 @@ exports.createComment = async (req, res) => {
 };
 
 exports.deleteComment = async (req, res) => {
-  const { id } = req.params;
+  const { commentId } = req.params;
+  const { id: currentUserId } = req.user;
 
-  const comment = await commentService.deleteCommentById(id);
+  const comment = await commentService.getCommentById(commentId);
 
   if (!comment) {
     return res.status(404).send();
   }
 
-  return res.send(comment);
+  if (comment.user._id.toString() !== currentUserId.toString()) {
+    return res.status(401).send({
+      message: 'You do not have permission to do this'
+    });
+  }
+
+  const returnComment = await commentService.deleteCommentById(commentId);
+
+  if (!returnComment) {
+    return res.status(404).send();
+  }
+
+  return res.send(returnComment);
 };
