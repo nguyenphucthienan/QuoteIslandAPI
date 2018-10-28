@@ -1,11 +1,13 @@
 const express = require('express');
 const router = express.Router();
+
 const authController = require('../controllers/authController');
 const roleController = require('../controllers/roleController');
 const authorController = require('../controllers/authorController');
 const categoryController = require('../controllers/categoryController');
 const quoteController = require('../controllers/quoteController');
 const commentController = require('../controllers/commentController');
+const imageController = require('../controllers/imageController');
 const { catchErrors } = require('../handlers/errorHandlers');
 
 const {
@@ -127,5 +129,10 @@ router.post('/quotes/:quoteId/comments',
 router.delete('/quotes/:quoteId/comments/:commentId',
   requireJwtAuth,
   catchErrors(commentController.deleteComment));
+
+router.post('/images/upload/cloudinary',
+  requireJwtAuth,
+  requireRoles([RoleNames.ADMIN, RoleNames.MODERATOR]),
+  imageController.cloudinaryUpload);
 
 module.exports = router;

@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const morgan = require('morgan');
 const cors = require('cors');
+const cloudinary = require('cloudinary');
 
 require('./models/Role');
 require('./models/User');
@@ -11,8 +12,8 @@ require('./models/Author');
 require('./models/Category');
 require('./models/Quote');
 require('./models/Comment');
-require('./services/passportLocal');
-require('./services/passportJwt');
+require('./services/passport/passportLocal');
+require('./services/passport/passportJwt');
 require('./seeds/Seeds');
 
 const routes = require('./routes');
@@ -41,6 +42,12 @@ app.use(bodyParser.json());
 app.use(morgan('dev'));
 
 app.use('/api', routes);
+
+cloudinary.config({
+  cloud_name: config.cloudinary.cloudName,
+  api_key: config.cloudinary.apiKey,
+  api_secret: config.cloudinary.apiSecret
+});
 
 if (process.env.NODE_ENV === 'production') {
   app.use(errorHandlers.productionErrorHandler);
