@@ -21,6 +21,13 @@ exports.getCategories = async (req, res) => {
   return res.send(data);
 };
 
+exports.getFeaturedCategories = async (req, res) => {
+  const featuredCategoriesPromise = categoryService.getFeaturedCategories();
+  const featuredCategories = await Promise.all(featuredCategoriesPromise);
+
+  return res.send(featuredCategories);
+};
+
 exports.getCategory = async (req, res) => {
   const { id } = req.params;
 

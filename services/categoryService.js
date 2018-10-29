@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Category = mongoose.model('Category');
+const CategoryConstants = require('../constants/CategoryContants');
 
 exports.getCategories = (pageNumber, pageSize, filterObj, sortObj) => (
   Category.aggregate([
@@ -65,4 +66,19 @@ exports.loveCategory = (id, currentUserId, operator) => (
   Category.findByIdAndUpdate(id,
     { [operator]: { loves: currentUserId } },
     { new: true })
+);
+
+exports.getFeaturedCategories = () => (
+  CategoryConstants.featuredCategoryNames
+    .map(async name => (
+      Category.aggregate([
+        { $match: { name } },
+        {
+          $project: {
+            _id: 1,
+            name: 1
+          }
+        }
+      ])
+    ))
 );

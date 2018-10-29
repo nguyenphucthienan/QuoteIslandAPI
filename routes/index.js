@@ -79,6 +79,9 @@ router.post('/authors/:id/love',
 router.get('/categories',
   catchErrors(categoryController.getCategories));
 
+router.get('/categories/featured',
+  catchErrors(categoryController.getFeaturedCategories));
+
 router.get('/categories/:id',
   catchErrors(categoryController.getCategory));
 
