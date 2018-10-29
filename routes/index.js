@@ -130,6 +130,9 @@ router.delete('/quotes/:quoteId/comments/:commentId',
   requireJwtAuth,
   catchErrors(commentController.deleteComment));
 
+router.get('/quotes/random/categories/:categoryId',
+  catchErrors(quoteController.getRandomQuotes));
+
 router.post('/images/upload/cloudinary',
   requireJwtAuth,
   requireRoles([RoleNames.ADMIN, RoleNames.MODERATOR]),

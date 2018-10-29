@@ -12,9 +12,7 @@ exports.getQuotes = (pageNumber, pageSize, filterObj, sortObj) => (
         as: 'author'
       },
     },
-    {
-      $unwind: '$author'
-    },
+    { $unwind: '$author' },
     {
       $lookup: {
         from: 'categories',
@@ -68,4 +66,36 @@ exports.loveQuote = (id, currentUserId, operator) => (
   Quote.findByIdAndUpdate(id,
     { [operator]: { loves: currentUserId } },
     { new: true })
+);
+
+exports.getRandomQuotesByCategoryId = (categoryId, size) => (
+  Quote.aggregate([
+    {
+      $match: {
+        categories: new mongoose.Types.ObjectId(categoryId)
+      },
+    },
+    { $sample: { size } },
+    {
+      $lookup: {
+        from: 'authors',
+        localField: 'author',
+        foreignField: '_id',
+        as: 'author'
+      },
+    },
+    { $unwind: '$author' },
+    {
+      $project: {
+        _id: 1,
+        createdAt: 1,
+        updatedAt: 1,
+        text: 1,
+        loves: 1,
+        loveCount: { $size: '$loves' },
+        'author._id': 1,
+        'author.fullName': 1
+      }
+    }
+  ])
 );

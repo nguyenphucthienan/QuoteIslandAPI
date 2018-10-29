@@ -70,3 +70,11 @@ exports.loveQuote = async (req, res) => {
 
   return res.send(returnQuote);
 };
+
+exports.getRandomQuotes = async (req, res) => {
+  const { categoryId } = req.params;
+  const size = Math.max(0, parseInt(req.query.size, 10)) || 5;
+  const quotes = await quoteService.getRandomQuotesByCategoryId(categoryId, size);
+
+  return res.send(quotes);
+};
