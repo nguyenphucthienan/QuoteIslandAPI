@@ -38,6 +38,18 @@ exports.createAuthor = async (req, res) => {
   return res.send(author);
 };
 
+exports.editAuthor = async (req, res) => {
+  const { id } = req.params;
+
+  const author = await authorService.editAuthorById(id, req.body);
+
+  if (!author) {
+    return res.status(404).send();
+  }
+
+  return res.send(author);
+};
+
 exports.deleteAuthor = async (req, res) => {
   const { id } = req.params;
 

@@ -52,6 +52,10 @@ exports.createAuthor = (author) => {
   return newAuthor.save();
 };
 
+exports.editAuthorById = (id, author) => (
+  Author.findByIdAndUpdate(id, author, { new: true }).exec()
+);
+
 exports.deleteAuthorById = id => (
   Author.findByIdAndDelete(id).exec()
 );
