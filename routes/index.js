@@ -95,6 +95,11 @@ router.post('/categories',
   requireRoles([RoleNames.ADMIN, RoleNames.MODERATOR]),
   catchErrors(categoryController.createCategory));
 
+router.put('/categories/:id',
+  requireJwtAuth,
+  requireRoles([RoleNames.ADMIN, RoleNames.MODERATOR]),
+  catchErrors(categoryController.updateCategory));
+
 router.delete('/categories/:id',
   requireJwtAuth,
   requireRoles([RoleNames.ADMIN, RoleNames.MODERATOR]),

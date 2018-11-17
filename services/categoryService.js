@@ -53,6 +53,10 @@ exports.createCategory = (category) => {
   return newCategory.save();
 };
 
+exports.updateCategoryById = (id, category) => (
+  Category.findByIdAndUpdate(id, category, { new: true }).exec()
+);
+
 exports.deleteCetagoryById = id => (
   Category.findByIdAndDelete(id).exec()
 );

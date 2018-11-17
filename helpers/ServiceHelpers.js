@@ -16,8 +16,10 @@ class ServiceHelpers {
 
         if (key === 'text') {
           newFilterObject[key] = new RegExp(value, 'i');
-        } else if (key === 'author' || key === 'categories') {
+        } else if (key === 'author') {
           newFilterObject[key] = mongoose.Types.ObjectId(value);
+        } else if (key === 'category') {
+          newFilterObject.categories = mongoose.Types.ObjectId(value);
         } else {
           newFilterObject[key] = value;
         }

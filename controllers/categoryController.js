@@ -45,6 +45,18 @@ exports.createCategory = async (req, res) => {
   return res.send(category);
 };
 
+exports.updateCategory = async (req, res) => {
+  const { id } = req.params;
+
+  const category = await categoryService.updateCategoryById(id, req.body);
+
+  if (!category) {
+    return res.status(404).send();
+  }
+
+  return res.send(category);
+};
+
 exports.deleteCategory = async (req, res) => {
   const { id } = req.params;
 
