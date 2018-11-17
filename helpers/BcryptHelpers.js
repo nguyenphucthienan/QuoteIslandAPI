@@ -10,13 +10,25 @@ class BcryptHelpers {
           return reject(genSaltErr);
         }
 
-        return bcrypt.hash(password, salt, null, (hashErr, hash) => {
+        return bcrypt.hash(password, salt, null, (hashErr, hashedPassword) => {
           if (hashErr) {
             return reject(hashErr);
           }
 
-          return resolve(hash);
+          return resolve(hashedPassword);
         });
+      });
+    });
+  }
+
+  static comparePassword(inputPassword, dbPassword) {
+    return new Promise((resolve, reject) => {
+      bcrypt.compare(inputPassword, dbPassword, (err, result) => {
+        if (err) {
+          reject(err);
+        }
+
+        resolve(result);
       });
     });
   }
