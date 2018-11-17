@@ -70,7 +70,7 @@ router.post('/authors',
 router.put('/authors/:id',
   requireJwtAuth,
   requireRoles([RoleNames.ADMIN, RoleNames.MODERATOR]),
-  catchErrors(authorController.editAuthor));
+  catchErrors(authorController.updateAuthor));
 
 router.delete('/authors/:id',
   requireJwtAuth,

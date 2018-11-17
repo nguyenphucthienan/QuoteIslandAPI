@@ -52,7 +52,7 @@ exports.createAuthor = (author) => {
   return newAuthor.save();
 };
 
-exports.editAuthorById = (id, author) => (
+exports.updateAuthorById = (id, author) => (
   Author.findByIdAndUpdate(id, author, { new: true }).exec()
 );
 
