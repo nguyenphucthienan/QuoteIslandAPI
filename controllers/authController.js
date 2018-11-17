@@ -2,30 +2,21 @@ const _ = require('lodash');
 const userService = require('../services/userService');
 
 exports.register = async (req, res) => {
-  try {
-    const {
-      username,
-      password,
-      firstName,
-      lastName
-    } = req.body;
+  const { username, password } = req.body;
 
-    if (!username || !password) {
-      return res.status(400).send({ message: 'You must provide username and password' });
-    }
-
-    const user = await userService.getUserByUsername(username);
-
-    if (user) {
-      return res.status(409).send({ message: 'Username already exists' });
-    }
-
-    const newUser = await userService.createUser(username, password, firstName, lastName);
-    const token = userService.generateTokenForUser(newUser);
-    return res.send({ token });
-  } catch (err) {
-    return res.status(500).send(err);
+  if (!username || !password) {
+    return res.status(400).send({ message: 'You must provide username and password' });
   }
+
+  const user = await userService.getUserByUsername(username);
+
+  if (user) {
+    return res.status(409).send({ message: 'Username already exists' });
+  }
+
+  const newUser = await userService.createUser(req.body);
+  const token = userService.generateTokenForUser(newUser);
+  return res.send({ token });
 };
 
 exports.checkUsername = async (req, res) => {

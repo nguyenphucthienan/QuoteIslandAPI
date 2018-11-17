@@ -35,12 +35,7 @@ exports.getUser = async (req, res) => {
 };
 
 exports.createUser = async (req, res) => {
-  const {
-    username,
-    password,
-    firstName,
-    lastName
-  } = req.body;
+  const { username, password } = req.body;
 
   if (!username || !password) {
     return res.status(400).send({ message: 'You must provide username and password' });
@@ -52,8 +47,8 @@ exports.createUser = async (req, res) => {
     return res.status(409).send({ message: 'Username already exists' });
   }
 
-  const newUser = await userService.createUser(username, password, firstName, lastName);
-  const returnUser = _.omit(newUser, ['password']);
+  const newUser = await userService.createUser(req.body);
+  const returnUser = _.omit(newUser.toObject(), ['password']);
   return res.send(returnUser);
 };
 

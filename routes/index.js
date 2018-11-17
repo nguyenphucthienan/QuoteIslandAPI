@@ -42,15 +42,15 @@ router.get('/users',
   requireRoles([RoleNames.ADMIN]),
   catchErrors(userController.getUsers));
 
-router.post('/users',
-  requireJwtAuth,
-  requireRoles([RoleNames.ADMIN]),
-  catchErrors(userController.createUser));
-
 router.get('/users/:id',
   requireJwtAuth,
   requireRoles([RoleNames.ADMIN]),
   catchErrors(userController.getUser));
+
+router.post('/users',
+  requireJwtAuth,
+  requireRoles([RoleNames.ADMIN]),
+  catchErrors(userController.createUser));
 
 router.put('/users/:id',
   requireJwtAuth,

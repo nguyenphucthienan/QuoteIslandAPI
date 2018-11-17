@@ -46,14 +46,8 @@ exports.getUserByUsername = username => (
     .exec()
 );
 
-exports.createUser = (username, password, firstName, lastName) => {
-  const newUser = new User({
-    username,
-    password,
-    firstName,
-    lastName
-  });
-
+exports.createUser = (user) => {
+  const newUser = new User({ ...user });
   return newUser.save();
 };
 

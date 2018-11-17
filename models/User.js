@@ -28,7 +28,7 @@ const userSchema = new Schema({
     type: String,
     required: 'Last name is required'
   },
-  avatarUrl: {
+  photoUrl: {
     type: String,
     trim: true
   },
