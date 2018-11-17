@@ -1,6 +1,31 @@
 const mongoose = require('mongoose');
 
 class ServiceHelpers {
+  static createUserFilterObject(filterString) {
+    if (!filterString) {
+      return {};
+    }
+
+    const textFields = ['username', 'email', 'firstName', 'lastName'];
+
+    return filterString.split('|')
+      .reduce((filterObj, item) => {
+        const splitedItem = item.split(':');
+        const key = splitedItem[0];
+        const value = splitedItem[1];
+
+        const newFilterObject = { ...filterObj };
+
+        if (textFields.includes(key)) {
+          newFilterObject[key] = new RegExp(value, 'i');
+        } else {
+          newFilterObject[key] = value;
+        }
+
+        return newFilterObject;
+      }, {});
+  }
+
   static createQuoteFilterObject(filterString) {
     if (!filterString) {
       return {};

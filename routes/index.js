@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const authController = require('../controllers/authController');
+const userController = require('../controllers/userController');
 const roleController = require('../controllers/roleController');
 const authorController = require('../controllers/authorController');
 const categoryController = require('../controllers/categoryController');
@@ -35,6 +36,31 @@ router.post('/auth/login',
 router.get('/auth/me',
   requireJwtAuth,
   catchErrors(authController.currentUser));
+
+router.get('/users',
+  requireJwtAuth,
+  requireRoles([RoleNames.ADMIN]),
+  catchErrors(userController.getUsers));
+
+router.post('/users',
+  requireJwtAuth,
+  requireRoles([RoleNames.ADMIN]),
+  catchErrors(userController.createUser));
+
+router.get('/users/:id',
+  requireJwtAuth,
+  requireRoles([RoleNames.ADMIN]),
+  catchErrors(userController.getUser));
+
+router.put('/users/:id',
+  requireJwtAuth,
+  requireRoles([RoleNames.ADMIN]),
+  catchErrors(userController.updateUser));
+
+router.delete('/users/:id',
+  requireJwtAuth,
+  requireRoles([RoleNames.ADMIN]),
+  catchErrors(userController.deleteUser));
 
 router.get('/roles',
   requireJwtAuth,
