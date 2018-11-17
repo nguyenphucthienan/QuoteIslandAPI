@@ -120,6 +120,11 @@ router.post('/quotes',
   requireRoles([RoleNames.ADMIN, RoleNames.MODERATOR]),
   catchErrors(quoteController.createQuote));
 
+router.put('/quotes/:id',
+  requireJwtAuth,
+  requireRoles([RoleNames.ADMIN, RoleNames.MODERATOR]),
+  catchErrors(quoteController.updateQuote));
+
 router.delete('/quotes/:id',
   requireJwtAuth,
   requireRoles([RoleNames.ADMIN, RoleNames.MODERATOR]),

@@ -27,6 +27,7 @@ exports.getQuotes = (pageNumber, pageSize, filterObj, sortObj) => (
         createdAt: 1,
         updatedAt: 1,
         text: 1,
+        photoUrl: 1,
         loves: 1,
         loveCount: { $size: '$loves' },
         'author._id': 1,
@@ -52,6 +53,10 @@ exports.createQuote = (quote) => {
   const newQuote = new Quote({ ...quote });
   return newQuote.save();
 };
+
+exports.updateQuoteById = (id, quote) => (
+  Quote.findByIdAndUpdate(id, quote, { new: true }).exec()
+);
 
 exports.deleteQuoteById = id => (
   Quote.findByIdAndDelete(id).exec()

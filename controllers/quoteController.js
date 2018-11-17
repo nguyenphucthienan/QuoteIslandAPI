@@ -40,6 +40,18 @@ exports.createQuote = async (req, res) => {
   return res.send(returnQuote);
 };
 
+exports.updateQuote = async (req, res) => {
+  const { id } = req.params;
+
+  const quote = await quoteService.updateQuoteById(id, req.body);
+
+  if (!quote) {
+    return res.status(404).send();
+  }
+
+  return res.send(quote);
+};
+
 exports.deleteQuote = async (req, res) => {
   const { id } = req.params;
 
