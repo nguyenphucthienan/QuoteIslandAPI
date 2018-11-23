@@ -73,11 +73,39 @@ exports.loveQuote = (id, currentUserId, operator) => (
     { new: true })
 );
 
+exports.getRandomQuotes = size => (
+  Quote.aggregate([
+    { $sample: { size } },
+    {
+      $lookup: {
+        from: 'authors',
+        localField: 'author',
+        foreignField: '_id',
+        as: 'author'
+      },
+    },
+    { $unwind: '$author' },
+    {
+      $project: {
+        _id: 1,
+        createdAt: 1,
+        updatedAt: 1,
+        text: 1,
+        photoUrl: 1,
+        loves: 1,
+        loveCount: { $size: '$loves' },
+        'author._id': 1,
+        'author.fullName': 1
+      }
+    }
+  ])
+);
+
 exports.getRandomQuotesByCategoryId = (categoryId, size) => (
   Quote.aggregate([
     {
       $match: {
-        categories: new mongoose.Types.ObjectId(categoryId)
+        categories: categoryId && new mongoose.Types.ObjectId(categoryId)
       },
     },
     { $sample: { size } },

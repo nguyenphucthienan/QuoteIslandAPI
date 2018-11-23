@@ -138,6 +138,12 @@ router.post('/categories/:id/love',
 router.get('/quotes',
   catchErrors(quoteController.getQuotes));
 
+router.get('/quotes/random',
+  catchErrors(quoteController.getRandomQuotes));
+
+router.get('/quotes/random/categories/:categoryId',
+  catchErrors(quoteController.getRandomQuotesByCategoryId));
+
 router.get('/quotes/:id',
   catchErrors(quoteController.getQuote));
 
@@ -173,9 +179,6 @@ router.post('/quotes/:quoteId/comments',
 router.delete('/quotes/:quoteId/comments/:commentId',
   requireJwtAuth,
   catchErrors(commentController.deleteComment));
-
-router.get('/quotes/random/categories/:categoryId',
-  catchErrors(quoteController.getRandomQuotes));
 
 router.post('/images/upload/cloudinary',
   requireJwtAuth,

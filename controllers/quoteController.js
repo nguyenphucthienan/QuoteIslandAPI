@@ -84,6 +84,14 @@ exports.loveQuote = async (req, res) => {
 };
 
 exports.getRandomQuotes = async (req, res) => {
+  const size = Math.max(0, parseInt(req.query.size, 10)) || 5;
+  const quotes = await quoteService.getRandomQuotes(size);
+
+  return res.send(quotes);
+};
+
+
+exports.getRandomQuotesByCategoryId = async (req, res) => {
   const { categoryId } = req.params;
   const size = Math.max(0, parseInt(req.query.size, 10)) || 5;
   const quotes = await quoteService.getRandomQuotesByCategoryId(categoryId, size);
