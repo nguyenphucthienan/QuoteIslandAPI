@@ -2,10 +2,19 @@ const _ = require('lodash');
 const userService = require('../services/userService');
 
 exports.register = async (req, res) => {
-  const { username, password } = req.body;
+  const {
+    username,
+    password,
+    firstName,
+    lastName
+  } = req.body;
 
   if (!username || !password) {
     return res.status(400).send({ message: 'You must provide username and password' });
+  }
+
+  if (!firstName || !lastName) {
+    return res.status(400).send({ message: 'You must provide first name and last name' });
   }
 
   const user = await userService.getUserByUsername(username);

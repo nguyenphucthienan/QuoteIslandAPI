@@ -5,7 +5,7 @@ module.exports = {
   token: {
     expirationTime: process.env.TOKEN_EXPIRATION_TIME
   },
-  corsWhitelist: process.env.CORS_WHITELIST,
+  corsWhitelist: [process.env.CORS_WHITELIST],
   cloudinary: {
     cloudName: process.env.CLOUDINARY_CLOUD_NAME,
     apiKey: process.env.CLOUDINARY_API_KEY,
