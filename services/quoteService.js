@@ -96,6 +96,7 @@ exports.getRandomQuotesByCategoryId = (categoryId, size) => (
         createdAt: 1,
         updatedAt: 1,
         text: 1,
+        photoUrl: 1,
         loves: 1,
         loveCount: { $size: '$loves' },
         'author._id': 1,

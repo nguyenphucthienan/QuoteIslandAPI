@@ -72,11 +72,12 @@ exports.loveCategory = (id, currentUserId, operator) => (
     { new: true })
 );
 
-exports.getFeaturedCategories = () => (
-  CategoryConstants.featuredCategoryNames
-    .map(async name => (
-      Category.aggregate([
-        { $match: { name } },
+exports.getFeaturedCategories = () => {
+  const categoryNames = CategoryConstants.featuredCategoryNames;
+  return Object.values(categoryNames)
+    .map(value => Category
+      .aggregate([
+        { $match: { name: value } },
         {
           $project: {
             _id: 1,
@@ -84,5 +85,37 @@ exports.getFeaturedCategories = () => (
           }
         }
       ])
-    ))
-);
+      .then((result) => {
+        const category = result[0];
+        let label = '';
+        let icon = '';
+
+        switch (category.name) {
+          case categoryNames.Happiness:
+            icon = 'fa fa-smile-o';
+            label = 'Happy';
+            break;
+          case categoryNames.Hope:
+            icon = 'fa fa-frown-o';
+            label = 'Sad';
+            break;
+          case categoryNames.Motivation:
+            icon = 'fa fa-sun-o';
+            label = 'Motivated';
+            break;
+          case categoryNames.Love:
+            icon = 'fa fa-heart-o';
+            label = 'Loving';
+            break;
+          default:
+            break;
+        }
+
+        return {
+          _id: category._id,
+          name: category.name,
+          label,
+          icon
+        };
+      }));
+};

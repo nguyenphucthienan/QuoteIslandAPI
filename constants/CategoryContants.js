@@ -1,8 +1,8 @@
 module.exports = {
-  featuredCategoryNames: [
-    'Happiness',
-    'Hope',
-    'Motivation',
-    'Love'
-  ]
+  featuredCategoryNames: {
+    Happiness: 'Happiness',
+    Hope: 'Hope',
+    Motivation: 'Motivation',
+    Love: 'Love'
+  }
 };
